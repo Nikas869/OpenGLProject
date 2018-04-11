@@ -10,10 +10,10 @@
 // Global variables
 
 // The main window class name.
-static TCHAR szWindowClass[] = _T("win32app");
+static TCHAR szWindowClass[] = _T("OpenGLApp");
 
 // The string that appears in the application's title bar.
-static TCHAR szTitle[] = _T("Win32 Guided Tour Application");
+static TCHAR szTitle[] = _T("OpenGL project");
 
 HINSTANCE hInst;
 
@@ -44,48 +44,40 @@ int CALLBACK WinMain(
     _In_ int       nCmdShow
 )
 {
-    WNDCLASSEX wcex;
+    WNDCLASSEX wc;
 
-    wcex.cbSize = sizeof(WNDCLASSEX);
-    wcex.style = CS_HREDRAW | CS_VREDRAW;
-    wcex.lpfnWndProc = WndProc;
-    wcex.cbClsExtra = 0;
-    wcex.cbWndExtra = 0;
-    wcex.hInstance = hInstance;
-    wcex.hIcon = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_APPLICATION));
-    wcex.hCursor = LoadCursor(NULL, IDC_ARROW);
-    wcex.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
-    wcex.lpszMenuName = NULL;
-    wcex.lpszClassName = szWindowClass;
-    wcex.hIconSm = LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_APPLICATION));
+    wc.cbSize =           sizeof(WNDCLASSEX);
+    wc.style =            CS_OWNDC;
+    wc.lpfnWndProc =      WndProc;
+    wc.cbClsExtra =       0;
+    wc.cbWndExtra =       0;
+    wc.hInstance =        hInstance;
+    wc.hIcon =            LoadIcon(NULL, IDI_APPLICATION);
+    wc.hCursor =          LoadCursor(NULL, IDC_ARROW);
+    wc.hbrBackground =    NULL;
+    wc.lpszMenuName =     NULL;
+    wc.lpszClassName =    szWindowClass;
+    wc.hIconSm =          LoadIcon(NULL, IDI_APPLICATION);
 
-    if (!RegisterClassEx(&wcex))
+    if (!RegisterClassEx(&wc))
     {
-        MessageBox(NULL,
+        MessageBox(
+            NULL,
             _T("Call to RegisterClassEx failed!"),
-            _T("Win32 Guided Tour"),
-            NULL);
+            szTitle,
+            NULL
+        );
 
         return 1;
     }
 
-    hInst = hInstance; // Store instance handle in our global variable  
+    hInst = hInstance;
 
-                       // The parameters to CreateWindow explained:  
-                       // szWindowClass: the name of the application  
-                       // szTitle: the text that appears in the title bar  
-                       // WS_OVERLAPPEDWINDOW: the type of window to create  
-                       // CW_USEDEFAULT, CW_USEDEFAULT: initial position (x, y)  
-                       // 500, 100: initial size (width, length)  
-                       // NULL: the parent of this window  
-                       // NULL: this application dows not have a menu bar  
-                       // hInstance: the first parameter from WinMain  
-                       // NULL: not used in this application  
     HWND hWnd = CreateWindow(
         szWindowClass,
         szTitle,
-        WS_OVERLAPPEDWINDOW,
-        CW_USEDEFAULT, CW_USEDEFAULT,
+        WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN | WS_CLIPSIBLINGS,
+        0, 0,
         1280, 720,
         NULL,
         NULL,
@@ -95,40 +87,64 @@ int CALLBACK WinMain(
 
     if (!hWnd)
     {
-        MessageBox(NULL,
+        MessageBox(
+            NULL,
             _T("Call to CreateWindow failed!"),
-            _T("Win32 Guided Tour"),
+            szTitle,
             NULL);
 
         return 1;
     }
 
-    // The parameters to ShowWindow explained:  
-    // hWnd: the value returned from CreateWindow  
-    // nCmdShow: the fourth parameter from WinMain  
-    ShowWindow(hWnd,
-        nCmdShow);
+    PIXELFORMATDESCRIPTOR pfd =
+    {
+        sizeof(PIXELFORMATDESCRIPTOR),
+        1,
+        PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER,    // Flags
+        PFD_TYPE_RGBA,        // The kind of framebuffer. RGBA or palette.
+        32,                   // Colordepth of the framebuffer.
+        0, 0, 0, 0, 0, 0,
+        0,
+        0,
+        0,
+        0, 0, 0, 0,
+        24,                   // Number of bits for the depthbuffer
+        8,                    // Number of bits for the stencilbuffer
+        0,                    // Number of Aux buffers in the framebuffer.
+        PFD_MAIN_PLANE,
+        0,
+        0, 0, 0
+    };
+
+    HDC hdc = GetDC(hWnd);
+    int pixelFormat = ChoosePixelFormat(hdc, &pfd);
+    SetPixelFormat(hdc, pixelFormat, &pfd);
+
+    HGLRC hglrc = wglCreateContext(hdc);
+    wglMakeCurrent(hdc, hglrc);
+
+    ShowWindow(hWnd, nCmdShow);
     UpdateWindow(hWnd);
 
-    // Main message loop:  
-    MSG msg;
-    while (GetMessage(&msg, NULL, 0, 0))
-    {
-        TranslateMessage(&msg);
-        DispatchMessage(&msg);
-    }
-
-    return (int)msg.wParam;
-
-
-
-    int major = 0, minor = 0;
+    /*int major = 0, minor = 0;
     glGetIntegerv(GL_MAJOR_VERSION, &major);
     glGetIntegerv(GL_MINOR_VERSION, &minor);
     printf("OpenGL context created.\nVersion %d.%d\nVendor %s\nRenderer %s\n",
         major, minor,
         glGetString(GL_VENDOR),
-        glGetString(GL_RENDERER));
+        glGetString(GL_RENDERER));*/
+
+    MSG msg;
+    while (GetMessage(&msg, NULL, 0, 0))
+    {
+        TranslateMessage(&msg);
+        DispatchMessage(&msg);
+        glClearColor(0.2f, 0.4f, 0.1f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
+        SwapBuffers(hdc);
+    }
+
+    return msg.wParam;
     //glfwInit();
     //glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     //glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -258,22 +274,13 @@ int CALLBACK WinMain(
     //}
 
     //glfwTerminate();
-    Sleep(999999);
     return 0;
 }
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-    PAINTSTRUCT ps;
-    HDC hdc;
-    TCHAR greeting[] = _T("Hello, World!");
-
     switch (message)
     {
-    case WM_PAINT:
-        hdc = BeginPaint(hWnd, &ps);
-        EndPaint(hWnd, &ps);
-        break;
     case WM_DESTROY:
         PostQuitMessage(0);
         break;
