@@ -1,14 +1,16 @@
 #include "stdafx.h"
+#include "window.h"
+#include "windowclass.h"
 
 #pragma comment(lib, "opengl32.lib")
 
 // Global variables
 
 // The main window class name.
-static TCHAR szWindowClass[] = _T("OpenGLApp");
+std::wstring szWindowClass = (L"OpenGLApp");
 
 // The string that appears in the application's title bar.
-static TCHAR szTitle[] = _T("OpenGL project");
+std::wstring szTitle = (L"OpenGL project");
 
 HINSTANCE hInst;
 
@@ -39,57 +41,8 @@ int CALLBACK WinMain(
     _In_ int       nCmdShow
 )
 {
-    WNDCLASSEX wc;
-
-    wc.cbSize =           sizeof(WNDCLASSEX);
-    wc.style =            CS_OWNDC;
-    wc.lpfnWndProc =      WndProc;
-    wc.cbClsExtra =       0;
-    wc.cbWndExtra =       0;
-    wc.hInstance =        hInstance;
-    wc.hIcon =            LoadIcon(NULL, IDI_APPLICATION);
-    wc.hCursor =          LoadCursor(NULL, IDC_ARROW);
-    wc.hbrBackground =    NULL;
-    wc.lpszMenuName =     NULL;
-    wc.lpszClassName =    szWindowClass;
-    wc.hIconSm =          LoadIcon(NULL, IDI_APPLICATION);
-
-    if (!RegisterClassEx(&wc))
-    {
-        MessageBox(
-            NULL,
-            _T("Call to RegisterClassEx failed!"),
-            szTitle,
-            NULL
-        );
-
-        return 1;
-    }
-
-    hInst = hInstance;
-
-    HWND hWnd = CreateWindow(
-        szWindowClass,
-        szTitle,
-        WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN | WS_CLIPSIBLINGS,
-        0, 0,
-        1280, 720,
-        NULL,
-        NULL,
-        hInstance,
-        NULL
-    );
-
-    if (!hWnd)
-    {
-        MessageBox(
-            NULL,
-            _T("Call to CreateWindow failed!"),
-            szTitle,
-            NULL);
-
-        return 1;
-    }
+    WindowClass windowClass = WindowClass(hInstance, WndProc, szWindowClass);
+    Window window = Window(hInstance, windowClass, szTitle, 1280, 720);
 
     PIXELFORMATDESCRIPTOR pfd =
     {
@@ -111,15 +64,15 @@ int CALLBACK WinMain(
         0, 0, 0
     };
 
-    HDC hdc = GetDC(hWnd);
+    HDC hdc = GetDC(window.getHandler());
     int pixelFormat = ChoosePixelFormat(hdc, &pfd);
     SetPixelFormat(hdc, pixelFormat, &pfd);
 
     HGLRC hglrc = wglCreateContext(hdc);
     wglMakeCurrent(hdc, hglrc);
 
-    ShowWindow(hWnd, nCmdShow);
-    UpdateWindow(hWnd);
+    window.show(nCmdShow);
+    UpdateWindow(window.getHandler());
 
     /*int major = 0, minor = 0;
     glGetIntegerv(GL_MAJOR_VERSION, &major);
@@ -140,21 +93,6 @@ int CALLBACK WinMain(
     }
 
     return msg.wParam;
-    //glfwInit();
-    //glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    //glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    //glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    //glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
-
-    //GLFWmonitor* primaryMonitor = glfwGetPrimaryMonitor();
-    //const GLFWvidmode* videoMode = glfwGetVideoMode(primaryMonitor);
-    //GLFWwindow* window = glfwCreateWindow(videoMode->width, videoMode->height, "OpenGL Project", primaryMonitor, nullptr);
-    //if (window == nullptr)
-    //{
-    //    std::cout << "Failed to create window" << std::endl;
-    //    glfwTerminate();
-    //    return -1;
-    //}
     //glfwMakeContextCurrent(window);
     //glfwSetKeyCallback(window, key_callback);
 
