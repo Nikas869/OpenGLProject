@@ -6,7 +6,7 @@ Window::Window(HINSTANCE hInstance, WindowClass &windowClass, std::wstring title
     hWnd_ = CreateWindow(
         windowClass.getName().c_str(),
         title.c_str(),
-        WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN | WS_CLIPSIBLINGS,
+        WS_OVERLAPPEDWINDOW,
         CW_USEDEFAULT, CW_USEDEFAULT,
         weight, height,
         NULL,

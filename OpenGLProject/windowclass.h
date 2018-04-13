@@ -8,6 +8,8 @@ public:
 
     std::wstring getName();
 
+    static WindowClass GetDefaultWindowClass(HINSTANCE hInstance, std::wstring className);
+
 private:
     HINSTANCE hInstance_;
     std::wstring name_;

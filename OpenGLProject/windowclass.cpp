@@ -51,3 +51,24 @@ WindowClass::~WindowClass()
     hInstance_ = nullptr;
     name_.clear();
 }
+
+
+LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+{
+    switch (message)
+    {
+    case WM_DESTROY:
+        PostQuitMessage(0);
+        break;
+    default:
+        return DefWindowProc(hWnd, message, wParam, lParam);
+        break;
+    }
+
+    return 0;
+}
+
+WindowClass WindowClass::GetDefaultWindowClass(HINSTANCE hInstance, std::wstring className)
+{
+    return WindowClass(hInstance, WndProc, className);
+}
