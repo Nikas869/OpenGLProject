@@ -41,7 +41,9 @@ int Application::start()
 
     HGLRC hglrc = wglCreateContext(hdc);
     wglMakeCurrent(hdc, hglrc);
-
+    typedef BOOL(APIENTRY * PFNWGLSWAPINTERVALPROC)(int);
+    PFNWGLSWAPINTERVALPROC wglSwapIntervalEXT = reinterpret_cast<PFNWGLSWAPINTERVALPROC>(wglGetProcAddress("wglSwapIntervalEXT"));
+    wglSwapIntervalEXT(0);
     window.show(nCmdShow_);
     UpdateWindow(window.getHandler());
 
