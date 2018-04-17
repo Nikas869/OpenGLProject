@@ -17,7 +17,7 @@ int Application::Start()
 
     // The string that appears in the application's title bar.
     std::wstring szTitle = (L"OpenGL project");
-    WindowClass windowClass = WindowClass::GetDefaultWindowClass(hInstance_, szWindowClass);
+    WindowClass windowClass(hInstance_, WndProc, szWindowClass);
     Window window(hInstance_, windowClass, szTitle, 1280, 720);
 
     PIXELFORMATDESCRIPTOR pfd =
@@ -202,4 +202,19 @@ int Application::Start()
 
 Application::~Application()
 {
+}
+
+LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+{
+    switch (message)
+    {
+    case WM_DESTROY:
+        PostQuitMessage(0);
+        break;
+    default:
+        return DefWindowProc(hWnd, message, wParam, lParam);
+        break;
+    }
+
+    return 0;
 }

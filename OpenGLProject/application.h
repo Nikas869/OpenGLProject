@@ -13,3 +13,4 @@ private:
     int nCmdShow_;
 };
 
+static LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
