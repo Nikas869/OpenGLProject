@@ -29,7 +29,10 @@ int CALLBACK WinMain(
 {
     Application app(hInstance, nCmdShow);
 
-    return app.start();
+    if (app.Initialize())
+    {
+        return app.Start();
+    }
 }
 
 //void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode)

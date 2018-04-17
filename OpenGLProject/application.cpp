@@ -5,7 +5,12 @@ Application::Application(HINSTANCE hInstance, int nCmdShow) : hInstance_(hInstan
 {
 }
 
-int Application::start()
+bool Application::Initialize()
+{
+    return true;
+}
+
+int Application::Start()
 {
     // The main window class name.
     std::wstring szWindowClass = (L"OpenGLApp");
@@ -35,7 +40,7 @@ int Application::start()
         0, 0, 0
     };
 
-    HDC hdc = GetDC(window.getHandler());
+    HDC hdc = GetDC(window.GetHandler());
     int pixelFormat = ChoosePixelFormat(hdc, &pfd);
     SetPixelFormat(hdc, pixelFormat, &pfd);
 
@@ -44,8 +49,8 @@ int Application::start()
     typedef BOOL(APIENTRY * PFNWGLSWAPINTERVALPROC)(int);
     PFNWGLSWAPINTERVALPROC wglSwapIntervalEXT = reinterpret_cast<PFNWGLSWAPINTERVALPROC>(wglGetProcAddress("wglSwapIntervalEXT"));
     wglSwapIntervalEXT(0);
-    window.show(nCmdShow_);
-    UpdateWindow(window.getHandler());
+    window.Show(nCmdShow_);
+    UpdateWindow(window.GetHandler());
 
     /*int major = 0, minor = 0;
     glGetIntegerv(GL_MAJOR_VERSION, &major);
@@ -64,7 +69,7 @@ int Application::start()
         auto currentTime = std::chrono::time_point_cast<std::chrono::duration<float>>(std::chrono::high_resolution_clock::now());
         nbFrames++;
         if (std::chrono::duration_cast<std::chrono::seconds>(currentTime - lastTime).count() >= 1) {
-            window.setTitle(std::to_wstring(1000.0 / double(nbFrames)) + L" ms/frame, " + std::to_wstring(nbFrames) + L" fps");
+            window.SetTitle(std::to_wstring(1000.0 / double(nbFrames)) + L" ms/frame, " + std::to_wstring(nbFrames) + L" fps");
             nbFrames = 0;
             lastTime += (std::chrono::seconds)1;
         }

@@ -5,7 +5,8 @@ public:
     Application(HINSTANCE hInstance, int nCmdShow);
     ~Application();
 
-    int start();
+    bool Initialize();
+    int Start();
 
 private:
     HINSTANCE hInstance_;

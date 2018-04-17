@@ -20,7 +20,7 @@ WindowClass::WindowClass(HINSTANCE hInstance, WNDPROC wndProc, std::wstring clas
     RegisterClass(windowClass);
 }
 
-std::wstring WindowClass::getName()
+std::wstring WindowClass::GetName()
 {
     return name_;
 }

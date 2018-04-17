@@ -7,9 +7,9 @@ public:
     Window(HINSTANCE hInstance, WindowClass &windowClass, std::wstring title, std::int32_t weight, std::int32_t height);
     ~Window();
 
-    HWND getHandler();
-    void show(int cmdShow);
-    void setTitle(std::wstring title);
+    HWND GetHandler();
+    void Show(int cmdShow);
+    void SetTitle(std::wstring title);
 
 private:
     HWND hWnd_;

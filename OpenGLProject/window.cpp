@@ -4,7 +4,7 @@
 Window::Window(HINSTANCE hInstance, WindowClass &windowClass, std::wstring title, std::int32_t weight, std::int32_t height)
 {
     hWnd_ = CreateWindow(
-        windowClass.getName().c_str(),
+        windowClass.GetName().c_str(),
         title.c_str(),
         WS_OVERLAPPEDWINDOW,
         CW_USEDEFAULT, CW_USEDEFAULT,
@@ -27,17 +27,17 @@ Window::Window(HINSTANCE hInstance, WindowClass &windowClass, std::wstring title
     }
 }
 
-HWND Window::getHandler()
+HWND Window::GetHandler()
 {
     return hWnd_;
 }
 
-void Window::show(int cmdShow)
+void Window::Show(int cmdShow)
 {
     ShowWindow(hWnd_, cmdShow);
 }
 
-void Window::setTitle(std::wstring title)
+void Window::SetTitle(std::wstring title)
 {
     SetWindowText(hWnd_, title.c_str());
 }

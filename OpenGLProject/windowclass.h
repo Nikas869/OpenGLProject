@@ -6,7 +6,7 @@ public:
     WindowClass(HINSTANCE hInstance, WNDPROC wndProc, std::wstring className);
     ~WindowClass();
 
-    std::wstring getName();
+    std::wstring GetName();
 
     static WindowClass GetDefaultWindowClass(HINSTANCE hInstance, std::wstring className);
 
