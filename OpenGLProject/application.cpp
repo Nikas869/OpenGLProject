@@ -3,8 +3,8 @@
 
 Application::Application(HINSTANCE hInstance, int nCmdShow) : hInstance_(hInstance), nCmdShow_(nCmdShow)
 {
-    openGLWrapper_ = 0;
-    window_ = 0;
+    window_ = Window();
+    openGLWrapper_ = OpenGLWrapper();
 }
 
 bool Application::Initialize()
@@ -12,48 +12,17 @@ bool Application::Initialize()
     // The main window class name.
     std::wstring szWindowClass = (L"OpenGLApp");
 
-    openGLWrapper_ = new OpenGLWrapper;
-    //openGLWrapper_.Initialize();
-
-    window_ = new Window;
-    if (!window_->Initialize(*openGLWrapper_, hInstance_, szWindowClass))
+    if (!window_.Initialize(openGLWrapper_, hInstance_, szWindowClass))
     {
         return false;
     }
-
-    hWnd_ = window_->GetHandler();
+    hWnd_ = window_.GetHandler();
 
     return true;
 }
 
 int Application::Start()
 {
-    PIXELFORMATDESCRIPTOR pfd =
-    {
-        sizeof(PIXELFORMATDESCRIPTOR),
-        1,
-        PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER,    // Flags
-        PFD_TYPE_RGBA,        // The kind of framebuffer. RGBA or palette.
-        32,                   // Colordepth of the framebuffer.
-        0, 0, 0, 0, 0, 0,
-        0,
-        0,
-        0,
-        0, 0, 0, 0,
-        24,                   // Number of bits for the depthbuffer
-        8,                    // Number of bits for the stencilbuffer
-        0,                    // Number of Aux buffers in the framebuffer.
-        PFD_MAIN_PLANE,
-        0,
-        0, 0, 0
-    };
-
-    HDC hdc = GetDC(hWnd_);
-    int pixelFormat = ChoosePixelFormat(hdc, &pfd);
-    SetPixelFormat(hdc, pixelFormat, &pfd);
-
-    HGLRC hglrc = wglCreateContext(hdc);
-    wglMakeCurrent(hdc, hglrc);
     typedef BOOL(APIENTRY * PFNWGLSWAPINTERVALPROC)(int);
     PFNWGLSWAPINTERVALPROC wglSwapIntervalEXT = reinterpret_cast<PFNWGLSWAPINTERVALPROC>(wglGetProcAddress("wglSwapIntervalEXT"));
     wglSwapIntervalEXT(0);
@@ -88,7 +57,7 @@ int Application::Start()
         }
         glClearColor(0.2f, 0.4f, 0.1f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
-        SwapBuffers(hdc);
+        SwapBuffers(openGLWrapper_.hdc_);
     }
 
     return 0;

@@ -5,7 +5,7 @@ Window::Window()
 {
 }
 
-bool Window::Initialize(OpenGLWrapper glWrapper, HINSTANCE hInstance, std::wstring title)
+bool Window::Initialize(OpenGLWrapper &glWrapper, HINSTANCE hInstance, std::wstring title)
 {
     WNDCLASSEX windowClass{};
     windowClass.cbSize = sizeof(WNDCLASSEX);
@@ -43,17 +43,17 @@ bool Window::Initialize(OpenGLWrapper glWrapper, HINSTANCE hInstance, std::wstri
         return false;
     }
 
+    if (!glWrapper.Initialize(hWnd_))
+    {
+        return false;
+    }
+
     return true;
 }
 
 HWND Window::GetHandler()
 {
     return hWnd_;
-}
-
-void Window::Show(int cmdShow)
-{
-    ShowWindow(hWnd_, cmdShow);
 }
 
 void Window::SetTitle(std::wstring title)

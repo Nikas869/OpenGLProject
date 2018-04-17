@@ -5,6 +5,8 @@ public:
     OpenGLWrapper();
     ~OpenGLWrapper();
 
-    bool Initialize();
+    bool Initialize(HWND hWnd);
+
+    HDC hdc_;
 };
 

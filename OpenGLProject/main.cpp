@@ -27,7 +27,7 @@ int CALLBACK WinMain(
     _In_ int       nCmdShow
 )
 {
-    Application app(hInstance, nCmdShow);
+    Application app = Application(hInstance, nCmdShow);
 
     if (app.Initialize())
     {

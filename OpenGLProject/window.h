@@ -7,10 +7,9 @@ public:
     Window();
     ~Window();
 
-    bool Initialize(OpenGLWrapper glWrapper, HINSTANCE hInstance, std::wstring title);
+    bool Initialize(OpenGLWrapper &glWrapper, HINSTANCE hInstance, std::wstring title);
 
     HWND GetHandler();
-    void Show(int cmdShow);
     void SetTitle(std::wstring title);
 
 private:
