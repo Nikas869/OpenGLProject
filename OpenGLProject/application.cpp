@@ -4,24 +4,30 @@
 Application::Application(HINSTANCE hInstance, int nCmdShow) : hInstance_(hInstance), nCmdShow_(nCmdShow)
 {
     openGLWrapper_ = 0;
+    window_ = 0;
 }
 
 bool Application::Initialize()
 {
-    OpenGLWrapper openGLWrapper_();
+    // The main window class name.
+    std::wstring szWindowClass = (L"OpenGLApp");
+
+    openGLWrapper_ = new OpenGLWrapper;
     //openGLWrapper_.Initialize();
+
+    window_ = new Window;
+    if (!window_->Initialize(*openGLWrapper_, hInstance_, szWindowClass))
+    {
+        return false;
+    }
+
+    hWnd_ = window_->GetHandler();
 
     return true;
 }
 
 int Application::Start()
 {
-    // The main window class name.
-    std::wstring szWindowClass = (L"OpenGLApp");
-
-    WindowClass windowClass(hInstance_, WndProc, szWindowClass);
-    Window window(hInstance_, windowClass, szWindowClass, 1280, 720);
-
     PIXELFORMATDESCRIPTOR pfd =
     {
         sizeof(PIXELFORMATDESCRIPTOR),
@@ -42,7 +48,7 @@ int Application::Start()
         0, 0, 0
     };
 
-    HDC hdc = GetDC(window.GetHandler());
+    HDC hdc = GetDC(hWnd_);
     int pixelFormat = ChoosePixelFormat(hdc, &pfd);
     SetPixelFormat(hdc, pixelFormat, &pfd);
 
@@ -51,8 +57,8 @@ int Application::Start()
     typedef BOOL(APIENTRY * PFNWGLSWAPINTERVALPROC)(int);
     PFNWGLSWAPINTERVALPROC wglSwapIntervalEXT = reinterpret_cast<PFNWGLSWAPINTERVALPROC>(wglGetProcAddress("wglSwapIntervalEXT"));
     wglSwapIntervalEXT(0);
-    window.Show(nCmdShow_);
-    UpdateWindow(window.GetHandler());
+    ShowWindow(hWnd_, nCmdShow_);
+    UpdateWindow(hWnd_);
 
     /*int major = 0, minor = 0;
     glGetIntegerv(GL_MAJOR_VERSION, &major);
@@ -71,7 +77,7 @@ int Application::Start()
         auto currentTime = std::chrono::time_point_cast<std::chrono::duration<float>>(std::chrono::high_resolution_clock::now());
         nbFrames++;
         if (std::chrono::duration_cast<std::chrono::seconds>(currentTime - lastTime).count() >= 1) {
-            window.SetTitle(std::to_wstring(1000.0 / double(nbFrames)) + L" ms/frame, " + std::to_wstring(nbFrames) + L" fps");
+            SetWindowText(hWnd_, (std::to_wstring(1000.0 / double(nbFrames)) + L" ms/frame, " + std::to_wstring(nbFrames) + L" fps").c_str());
             nbFrames = 0;
             lastTime += (std::chrono::seconds)1;
         }
@@ -89,18 +95,9 @@ int Application::Start()
     //glfwMakeContextCurrent(window);
     //glfwSetKeyCallback(window, key_callback);
 
-    //glewExperimental = GL_TRUE;
-    //if (glewInit() != GLEW_OK)
-    //{
-    //    std::cout << "Failed to initialize GLEW" << std::endl;
-    //    return -1;
-    //}
-
     //int width, height;
     //glfwGetFramebufferSize(window, &width, &height);
     //glViewport(0, 0, width, height);
-
-    //glfwSwapInterval(0);
 
     //double lastTime = glfwGetTime();
     //int nbFrames = 0;
@@ -204,19 +201,4 @@ int Application::Start()
 
 Application::~Application()
 {
-}
-
-LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
-{
-    switch (message)
-    {
-    case WM_DESTROY:
-        PostQuitMessage(0);
-        break;
-    default:
-        return DefWindowProc(hWnd, message, wParam, lParam);
-        break;
-    }
-
-    return 0;
 }

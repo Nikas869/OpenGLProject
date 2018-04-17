@@ -9,5 +9,4 @@
 #include "Include\GL\glext.h"
 #include "Include\GL\wglext.h"
 #include "window.h"
-#include "windowclass.h"
 #include "openglwrapper.h"

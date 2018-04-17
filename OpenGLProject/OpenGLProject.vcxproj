@@ -129,14 +129,12 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="window.cpp" />
-    <ClCompile Include="windowclass.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="application.h" />
     <ClInclude Include="openglwrapper.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="window.h" />
-    <ClInclude Include="windowclass.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

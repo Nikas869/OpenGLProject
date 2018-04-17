@@ -1,30 +1,49 @@
 #include "stdafx.h"
 #include "window.h"
 
-Window::Window(HINSTANCE hInstance, WindowClass &windowClass, std::wstring title, std::int32_t weight, std::int32_t height)
+Window::Window()
 {
+}
+
+bool Window::Initialize(OpenGLWrapper glWrapper, HINSTANCE hInstance, std::wstring title)
+{
+    WNDCLASSEX windowClass{};
+    windowClass.cbSize = sizeof(WNDCLASSEX);
+    windowClass.style = CS_OWNDC;
+    windowClass.lpfnWndProc = WndProc;
+    windowClass.cbClsExtra = 0;
+    windowClass.cbWndExtra = 0;
+    windowClass.hInstance = hInstance;
+    windowClass.hIcon = LoadIcon(NULL, IDI_APPLICATION);
+    windowClass.hCursor = LoadCursor(NULL, IDC_ARROW);
+    windowClass.hbrBackground = NULL;
+    windowClass.lpszMenuName = NULL;
+    windowClass.lpszClassName = title.c_str();
+    windowClass.hIconSm = LoadIcon(NULL, IDI_APPLICATION);
+
+    if (!RegisterClassEx(&windowClass))
+    {
+        return false;
+    }
+
     hWnd_ = CreateWindow(
-        windowClass.GetName().c_str(),
-        title.c_str(),
-        WS_OVERLAPPEDWINDOW,
-        CW_USEDEFAULT, CW_USEDEFAULT,
-        weight, height,
-        NULL,
-        NULL,
-        hInstance,
-        NULL
+    title.c_str(),
+    title.c_str(),
+    WS_OVERLAPPEDWINDOW,
+    CW_USEDEFAULT, CW_USEDEFAULT,
+    1280, 720,
+    NULL,
+    NULL,
+    hInstance,
+    NULL
     );
 
     if (!hWnd_)
     {
-        MessageBox(
-            NULL,
-            (L"Call to CreateWindow failed!"),
-            (L"Error!"),
-            NULL);
-
-        hWnd_ = nullptr;
+        return false;
     }
+
+    return true;
 }
 
 HWND Window::GetHandler()
@@ -48,4 +67,19 @@ Window::~Window()
     {
         DestroyWindow(hWnd_);
     }
+}
+
+LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+{
+    switch (message)
+    {
+    case WM_DESTROY:
+        PostQuitMessage(0);
+        break;
+    default:
+        return DefWindowProc(hWnd, message, wParam, lParam);
+        break;
+    }
+
+    return 0;
 }

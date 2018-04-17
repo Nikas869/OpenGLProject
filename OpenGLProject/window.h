@@ -1,11 +1,13 @@
 #pragma once
-#include "windowclass.h"
+#include "openglwrapper.h"
 
 class Window
 {
 public:
-    Window(HINSTANCE hInstance, WindowClass &windowClass, std::wstring title, std::int32_t weight, std::int32_t height);
+    Window();
     ~Window();
+
+    bool Initialize(OpenGLWrapper glWrapper, HINSTANCE hInstance, std::wstring title);
 
     HWND GetHandler();
     void Show(int cmdShow);
@@ -15,3 +17,4 @@ private:
     HWND hWnd_;
 };
 
+static LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);

@@ -10,9 +10,8 @@ public:
 
 private:
     OpenGLWrapper *openGLWrapper_;
+    Window *window_;
     HINSTANCE hInstance_;
     HWND hWnd_;
     int nCmdShow_;
 };
-
-static LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);

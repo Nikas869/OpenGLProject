@@ -4,5 +4,7 @@ class OpenGLWrapper
 public:
     OpenGLWrapper();
     ~OpenGLWrapper();
+
+    bool Initialize();
 };
 
