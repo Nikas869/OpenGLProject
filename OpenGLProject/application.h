@@ -9,7 +9,9 @@ public:
     int Start();
 
 private:
+    OpenGLWrapper *openGLWrapper_;
     HINSTANCE hInstance_;
+    HWND hWnd_;
     int nCmdShow_;
 };
 

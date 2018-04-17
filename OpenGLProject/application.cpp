@@ -3,10 +3,14 @@
 
 Application::Application(HINSTANCE hInstance, int nCmdShow) : hInstance_(hInstance), nCmdShow_(nCmdShow)
 {
+    openGLWrapper_ = 0;
 }
 
 bool Application::Initialize()
 {
+    OpenGLWrapper openGLWrapper_();
+    //openGLWrapper_.Initialize();
+
     return true;
 }
 
@@ -15,10 +19,8 @@ int Application::Start()
     // The main window class name.
     std::wstring szWindowClass = (L"OpenGLApp");
 
-    // The string that appears in the application's title bar.
-    std::wstring szTitle = (L"OpenGL project");
     WindowClass windowClass(hInstance_, WndProc, szWindowClass);
-    Window window(hInstance_, windowClass, szTitle, 1280, 720);
+    Window window(hInstance_, windowClass, szWindowClass, 1280, 720);
 
     PIXELFORMATDESCRIPTOR pfd =
     {
