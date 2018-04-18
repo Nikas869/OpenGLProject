@@ -7,6 +7,7 @@ public:
 
     bool Initialize();
     int Start();
+    LRESULT CALLBACK MessageHandler(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
 private:
     OpenGLWrapper openGLWrapper_;
@@ -15,3 +16,6 @@ private:
     HWND hWnd_;
     int nCmdShow_;
 };
+
+static LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
+static Application * ApplicationHandle = 0;

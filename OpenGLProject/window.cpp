@@ -5,12 +5,12 @@ Window::Window()
 {
 }
 
-bool Window::Initialize(OpenGLWrapper &glWrapper, HINSTANCE hInstance, std::wstring title)
+bool Window::Initialize(OpenGLWrapper &glWrapper, HINSTANCE hInstance, WNDPROC wndProc, std::wstring title)
 {
     WNDCLASSEX windowClass{};
     windowClass.cbSize = sizeof(WNDCLASSEX);
     windowClass.style = CS_OWNDC;
-    windowClass.lpfnWndProc = WndProc;
+    windowClass.lpfnWndProc = wndProc;
     windowClass.cbClsExtra = 0;
     windowClass.cbWndExtra = 0;
     windowClass.hInstance = hInstance;
@@ -26,17 +26,8 @@ bool Window::Initialize(OpenGLWrapper &glWrapper, HINSTANCE hInstance, std::wstr
         return false;
     }
 
-    hWnd_ = CreateWindow(
-    title.c_str(),
-    title.c_str(),
-    WS_OVERLAPPEDWINDOW,
-    CW_USEDEFAULT, CW_USEDEFAULT,
-    1280, 720,
-    NULL,
-    NULL,
-    hInstance,
-    NULL
-    );
+    hWnd_ = CreateWindow(title.c_str(), title.c_str(), WS_OVERLAPPEDWINDOW,
+        CW_USEDEFAULT, CW_USEDEFAULT, 1280, 720, NULL, NULL, hInstance, NULL);
 
     if (!hWnd_)
     {
@@ -47,6 +38,9 @@ bool Window::Initialize(OpenGLWrapper &glWrapper, HINSTANCE hInstance, std::wstr
     {
         return false;
     }
+
+    ShowWindow(hWnd_, SW_SHOW);
+    UpdateWindow(hWnd_);
 
     return true;
 }
@@ -67,19 +61,4 @@ Window::~Window()
     {
         DestroyWindow(hWnd_);
     }
-}
-
-LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
-{
-    switch (message)
-    {
-    case WM_DESTROY:
-        PostQuitMessage(0);
-        break;
-    default:
-        return DefWindowProc(hWnd, message, wParam, lParam);
-        break;
-    }
-
-    return 0;
 }

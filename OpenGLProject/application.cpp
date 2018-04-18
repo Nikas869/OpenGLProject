@@ -12,7 +12,7 @@ bool Application::Initialize()
     // The main window class name.
     std::wstring szWindowClass = (L"OpenGLApp");
 
-    if (!window_.Initialize(openGLWrapper_, hInstance_, szWindowClass))
+    if (!window_.Initialize(openGLWrapper_, hInstance_, WndProc, szWindowClass))
     {
         return false;
     }
@@ -23,11 +23,7 @@ bool Application::Initialize()
 
 int Application::Start()
 {
-    typedef BOOL(APIENTRY * PFNWGLSWAPINTERVALPROC)(int);
-    PFNWGLSWAPINTERVALPROC wglSwapIntervalEXT = reinterpret_cast<PFNWGLSWAPINTERVALPROC>(wglGetProcAddress("wglSwapIntervalEXT"));
-    wglSwapIntervalEXT(0);
-    ShowWindow(hWnd_, nCmdShow_);
-    UpdateWindow(hWnd_);
+    openGLWrapper_.wglSwapIntervalEXT(0);
 
     /*int major = 0, minor = 0;
     glGetIntegerv(GL_MAJOR_VERSION, &major);
@@ -168,6 +164,35 @@ int Application::Start()
     //glfwTerminate();
 }
 
+LRESULT CALLBACK Application::MessageHandler(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+{
+    switch (message)
+    {
+    default:
+    {
+        return DefWindowProc(hWnd, message, wParam, lParam);
+    }
+    }
+}
+
 Application::~Application()
 {
+}
+
+LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+{
+    switch (message)
+    {
+    case WM_DESTROY | WM_KEYDOWN:
+    {
+        PostQuitMessage(0);
+        break;
+    }
+    default:
+    {
+        return ApplicationHandle->MessageHandler(hWnd, message, wParam, lParam);
+    }
+    }
+
+    return 0;
 }

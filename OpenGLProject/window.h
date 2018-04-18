@@ -7,7 +7,7 @@ public:
     Window();
     ~Window();
 
-    bool Initialize(OpenGLWrapper &glWrapper, HINSTANCE hInstance, std::wstring title);
+    bool Initialize(OpenGLWrapper &glWrapper, HINSTANCE hInstance, WNDPROC wndProc, std::wstring title);
 
     HWND GetHandler();
     void SetTitle(std::wstring title);
@@ -15,5 +15,3 @@ public:
 private:
     HWND hWnd_;
 };
-
-static LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
