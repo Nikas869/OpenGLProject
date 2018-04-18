@@ -9,6 +9,9 @@ public:
 
     bool Initialize(HWND hWnd);
 
+    void Fill(float red, float green, float blue, float alfa);
+    void Swap();
+
     PFNWGLSWAPINTERVALPROC wglSwapIntervalEXT;
 
     HDC hdc_;

@@ -13,22 +13,34 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\Core">
+      <UniqueIdentifier>{ab2b4415-6c75-44a6-b3b9-b7fd4a368529}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Graphics">
+      <UniqueIdentifier>{300281ba-2995-44c1-ad20-e82030e69829}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utils">
+      <UniqueIdentifier>{1258d415-224e-4c14-b1d7-71abf4b8e931}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="stdafx.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="application.cpp">
+      <Filter>Source Files\Core</Filter>
     </ClCompile>
     <ClCompile Include="window.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="application.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Core</Filter>
     </ClCompile>
     <ClCompile Include="openglwrapper.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="renderer.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files\Utils</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -42,6 +54,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="openglwrapper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="renderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

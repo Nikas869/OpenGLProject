@@ -10,3 +10,4 @@
 #include "Include\GL\wglext.h"
 #include "window.h"
 #include "openglwrapper.h"
+#include "renderer.h"

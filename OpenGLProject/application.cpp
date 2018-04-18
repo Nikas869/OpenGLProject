@@ -3,36 +3,30 @@
 
 Application::Application(HINSTANCE hInstance, int nCmdShow) : hInstance_(hInstance), nCmdShow_(nCmdShow)
 {
-    window_ = Window();
-    openGLWrapper_ = OpenGLWrapper();
+    window_ = 0;
+    openGLWrapper_ = 0;
+    renderer_ = 0;
 }
 
 bool Application::Initialize()
 {
-    // The main window class name.
     std::wstring szWindowClass = (L"OpenGLApp");
 
-    if (!window_.Initialize(openGLWrapper_, hInstance_, WndProc, szWindowClass))
+    openGLWrapper_ = new OpenGLWrapper;
+    window_ = new Window;
+    renderer_ = new Renderer(openGLWrapper_);
+
+    if (!window_->Initialize(openGLWrapper_, hInstance_, WndProc, szWindowClass))
     {
         return false;
     }
-    hWnd_ = window_.GetHandler();
+    hWnd_ = window_->GetHandler();
 
     return true;
 }
 
 int Application::Start()
 {
-    openGLWrapper_.wglSwapIntervalEXT(0);
-
-    /*int major = 0, minor = 0;
-    glGetIntegerv(GL_MAJOR_VERSION, &major);
-    glGetIntegerv(GL_MINOR_VERSION, &minor);
-    printf("OpenGL context created.\nVersion %d.%d\nVendor %s\nRenderer %s\n",
-    major, minor,
-    glGetString(GL_VENDOR),
-    glGetString(GL_RENDERER));*/
-
     MSG msg{};
     int nbFrames = 0;
     auto lastTime = std::chrono::time_point_cast<std::chrono::duration<float>>(std::chrono::high_resolution_clock::now());
@@ -51,9 +45,7 @@ int Application::Start()
             TranslateMessage(&msg);
             DispatchMessage(&msg);
         }
-        glClearColor(0.2f, 0.4f, 0.1f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
-        SwapBuffers(openGLWrapper_.hdc_);
+        renderer_->Render();
     }
 
     return 0;
@@ -183,7 +175,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     switch (message)
     {
-    case WM_DESTROY | WM_KEYDOWN:
+    case WM_DESTROY:
     {
         PostQuitMessage(0);
         break;

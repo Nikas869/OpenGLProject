@@ -10,8 +10,9 @@ public:
     LRESULT CALLBACK MessageHandler(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
 private:
-    OpenGLWrapper openGLWrapper_;
-    Window window_;
+    OpenGLWrapper *openGLWrapper_;
+    Window *window_;
+    Renderer *renderer_;
     HINSTANCE hInstance_;
     HWND hWnd_;
     int nCmdShow_;

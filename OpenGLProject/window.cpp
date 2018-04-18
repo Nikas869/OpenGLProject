@@ -5,7 +5,7 @@ Window::Window()
 {
 }
 
-bool Window::Initialize(OpenGLWrapper &glWrapper, HINSTANCE hInstance, WNDPROC wndProc, std::wstring title)
+bool Window::Initialize(OpenGLWrapper *glWrapper, HINSTANCE hInstance, WNDPROC wndProc, std::wstring title)
 {
     WNDCLASSEX windowClass{};
     windowClass.cbSize = sizeof(WNDCLASSEX);
@@ -34,7 +34,7 @@ bool Window::Initialize(OpenGLWrapper &glWrapper, HINSTANCE hInstance, WNDPROC w
         return false;
     }
 
-    if (!glWrapper.Initialize(hWnd_))
+    if (!glWrapper->Initialize(hWnd_))
     {
         return false;
     }

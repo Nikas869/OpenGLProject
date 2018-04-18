@@ -125,6 +125,7 @@
     <ClCompile Include="application.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="openglwrapper.cpp" />
+    <ClCompile Include="renderer.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
     </ClCompile>
@@ -133,6 +134,7 @@
   <ItemGroup>
     <ClInclude Include="application.h" />
     <ClInclude Include="openglwrapper.h" />
+    <ClInclude Include="renderer.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="window.h" />
   </ItemGroup>

@@ -38,7 +38,20 @@ bool OpenGLWrapper::Initialize(HWND hWnd)
         return false;
     }
 
+    wglSwapIntervalEXT(1);
+
     return true;
+}
+
+void OpenGLWrapper::Fill(float red, float green, float blue, float alfa)
+{
+    glClearColor(red, green, blue, alfa);
+    glClear(GL_COLOR_BUFFER_BIT);
+}
+
+void OpenGLWrapper::Swap()
+{
+    SwapBuffers(hdc_);
 }
 
 bool OpenGLWrapper::InitializeAPI()
