@@ -1,6 +1,4 @@
 #pragma once
-typedef void (APIENTRY * PFNWGLSWAPINTERVALPROC)(int);
-
 class OpenGLWrapper
 {
 public:
@@ -12,9 +10,28 @@ public:
     void Fill(float red, float green, float blue, float alfa);
     void Swap();
 
-    PFNWGLSWAPINTERVALPROC wglSwapIntervalEXT;
+    PFNWGLSWAPINTERVALEXTPROC wglSwapIntervalEXT;
+    PFNGLCREATESHADERPROC glCreateShader;
+    PFNGLSHADERSOURCEPROC glShaderSource;
+    PFNGLCOMPILESHADERPROC glCompileShader;
+    PFNGLCREATEPROGRAMPROC glCreateProgram;
+    PFNGLUSEPROGRAMPROC glUseProgram;
+    PFNGLATTACHSHADERPROC glAttachShader;
+    PFNGLBINDATTRIBLOCATIONPROC glBindAttribLocation;
+    PFNGLLINKPROGRAMPROC glLinkProgram;
+    PFNGLGENVERTEXARRAYSPROC glGenVertexArrays;
+    PFNGLBINDVERTEXARRAYPROC glBindVertexArray;
+    PFNGLGENBUFFERSPROC glGenBuffers;
+    PFNGLBINDBUFFERPROC glBindBuffer;
+    PFNGLBUFFERDATAPROC glBufferData;
+    PFNGLENABLEVERTEXATTRIBARRAYPROC glEnableVertexAttribArray;
+    PFNGLVERTEXATTRIBPOINTERPROC glVertexAttribPointer;
+    PFNGLGETSHADERIVPROC glGetShaderiv;
+
+    PFNGLGETSHADERINFOLOGPROC glGetShaderInfoLog;
 
     HDC hdc_;
+    HGLRC hglrc_;
 private:
     bool InitializeAPI();
 };

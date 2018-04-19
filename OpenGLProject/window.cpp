@@ -27,7 +27,7 @@ bool Window::Initialize(OpenGLWrapper *glWrapper, HINSTANCE hInstance, WNDPROC w
     }
 
     hWnd_ = CreateWindow(title.c_str(), title.c_str(), WS_OVERLAPPEDWINDOW,
-        CW_USEDEFAULT, CW_USEDEFAULT, 1280, 720, NULL, NULL, hInstance, NULL);
+        CW_USEDEFAULT, CW_USEDEFAULT, 640, 480, NULL, NULL, hInstance, NULL);
 
     if (!hWnd_)
     {

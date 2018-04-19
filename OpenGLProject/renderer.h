@@ -8,6 +8,14 @@ public:
     void Render();
 
 private:
-    OpenGLWrapper *openGLWrapper_;
-};
+    void InitializeBuffers();
+    void RenderBuffers();
 
+    OpenGLWrapper *openGLWrapper_;
+
+    GLuint vertexShader_;
+    GLuint fragmentShader_;
+    GLuint shaderProgram_;
+
+    unsigned int vertexArrayId_;
+};
