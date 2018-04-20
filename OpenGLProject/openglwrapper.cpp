@@ -38,6 +38,7 @@ bool OpenGLWrapper::Initialize(HWND hWnd)
         return false;
     }
 
+    glEnable(GL_DEPTH_TEST);
     wglSwapIntervalEXT(0);
 
     return true;
@@ -46,7 +47,7 @@ bool OpenGLWrapper::Initialize(HWND hWnd)
 void OpenGLWrapper::Fill(float red, float green, float blue, float alfa)
 {
     glClearColor(red, green, blue, alfa);
-    glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 void OpenGLWrapper::Swap()
@@ -160,6 +161,18 @@ bool OpenGLWrapper::InitializeAPI()
 
     glGetShaderInfoLog = reinterpret_cast<PFNGLGETSHADERINFOLOGPROC>(wglGetProcAddress("glGetShaderInfoLog"));
     if (!glGetShaderInfoLog)
+    {
+        return false;
+    }
+
+    glGetUniformLocation = reinterpret_cast<PFNGLGETUNIFORMLOCATIONPROC>(wglGetProcAddress("glGetUniformLocation"));
+    if (!glGetUniformLocation)
+    {
+        return false;
+    }
+
+    glUniformMatrix4fv = reinterpret_cast<PFNGLUNIFORMMATRIX4FVPROC>(wglGetProcAddress("glUniformMatrix4fv"));
+    if (!glUniformMatrix4fv)
     {
         return false;
     }

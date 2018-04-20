@@ -10,6 +10,8 @@ Application::Application(HINSTANCE hInstance, int nCmdShow) : hInstance_(hInstan
 
 bool Application::Initialize()
 {
+    ApplicationHandle = this;
+
     std::wstring szWindowClass = (L"OpenGLApp");
 
     openGLWrapper_ = new OpenGLWrapper;
@@ -56,6 +58,17 @@ LRESULT CALLBACK Application::MessageHandler(HWND hWnd, UINT message, WPARAM wPa
 {
     switch (message)
     {
+    case WM_KEYDOWN:
+    {
+        if (wParam == VK_UP)
+            renderer_->cameraPos += renderer_->cameraSpeed * renderer_->cameraFront;
+        if (wParam == VK_DOWN)
+            renderer_->cameraPos -= renderer_->cameraSpeed * renderer_->cameraFront;
+        if (wParam == VK_LEFT)
+            renderer_->cameraPos -= glm::normalize(glm::cross(renderer_->cameraFront, renderer_->cameraUp)) * renderer_->cameraSpeed;
+        if (wParam == VK_RIGHT)
+            renderer_->cameraPos += glm::normalize(glm::cross(renderer_->cameraFront, renderer_->cameraUp)) * renderer_->cameraSpeed;
+    }
     default:
     {
         return DefWindowProc(hWnd, message, wParam, lParam);

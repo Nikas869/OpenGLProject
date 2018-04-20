@@ -27,8 +27,9 @@ public:
     PFNGLENABLEVERTEXATTRIBARRAYPROC glEnableVertexAttribArray;
     PFNGLVERTEXATTRIBPOINTERPROC glVertexAttribPointer;
     PFNGLGETSHADERIVPROC glGetShaderiv;
-
     PFNGLGETSHADERINFOLOGPROC glGetShaderInfoLog;
+    PFNGLGETUNIFORMLOCATIONPROC glGetUniformLocation;
+    PFNGLUNIFORMMATRIX4FVPROC glUniformMatrix4fv;
 
     HDC hdc_;
     HGLRC hglrc_;
